@@ -1,7 +1,7 @@
 {
   "name": "@bobbytable/dash-kit",
-  "version": "0.2.0",
-  "description": "Dracula / Alucard dashboard styling: colour tokens, cards, charts, tables, tabs and pop-ups (light + dark, prefers-color-scheme).",
+  "version": "0.3.0",
+  "description": "Dracula / Alucard dashboard kit: colour tokens, cards, charts, tables, tabs, pop-ups, icons \u2014 CSS plus small dependency-free JS (line chart, bar tooltips, formatting, copy).",
   "license": "MIT",
   "type": "module",
   "files": [
@@ -9,6 +9,7 @@
     "index.css",
     "css/",
     "js/",
+    "dist/",
     "fonts/",
     "README.md",
     "LICENSE"
@@ -19,7 +20,14 @@
     "./css/*": "./css/*",
     "./fonts/*": "./fonts/*",
     "./icons": "./js/icons.js",
-    "./js/*": "./js/*"
+    "./chart": "./js/chart.js",
+    "./bars": "./js/bars.js",
+    "./markup": "./js/markup.js",
+    "./format": "./js/format.js",
+    "./tooltip": "./js/tooltip.js",
+    "./copy": "./js/copy.js",
+    "./js/*": "./js/*",
+    "./global": "./dist/dash-kit.global.js"
   },
   "style": "index.css",
   "sideEffects": [
@@ -42,5 +50,9 @@
     "lucide": {
       "optional": true
     }
+  },
+  "scripts": {
+    "build": "node build.cjs",
+    "prepublishOnly": "node build.cjs"
   }
 }

@@ -56,6 +56,33 @@ Plain HTML: load Lucide's UMD build and use names — `icon('Cctv')`, or mark up
 `hydrateIcons()`. Angular: `[innerHTML]` with `DomSanitizer.bypassSecurityTrustHtml(icon(Cctv))`, or `hydrateIcons(el)` in
 `ngAfterViewInit`. (Prefer components? `lucide-angular` / `lucide-react` render the same icons; `icons.css` styles them via `.ic`.)
 
+## JavaScript
+Small, dependency-free ES modules (they style through the CSS above):
+
+| Import | What |
+|---|---|
+| `@bobbytable/dash-kit/chart` | `chart(el, cfg)` — canvas line chart: series, threshold bands (`warn`/`error`), crosshair + one tooltip, area, dashed series, a named mark |
+| `@bobbytable/dash-kit/markup` | `bars(cells)` bar row · `meter(pct, warn, error)` threshold meter · `kv(rows)` key/value list (HTML strings) |
+| `@bobbytable/dash-kit/bars` | `installBarTips()` — hover / tap / drag tooltips for every `.pbars` row |
+| `@bobbytable/dash-kit/tooltip` | `tipShow` / `tipHide` — the sliding callout the charts use |
+| `@bobbytable/dash-kit/format` | `esc bytes rate ago dur when date hhmm days spaced longDate` |
+| `@bobbytable/dash-kit/copy` | `copyText(text)` · `installCopyButtons()` for `<button data-copy="…">` |
+| `@bobbytable/dash-kit/icons` | see Icons |
+
+```js
+import { chart } from '@bobbytable/dash-kit/chart';
+chart(document.querySelector('#cpu'), {           // <div class="chart" id="cpu"></div>
+  series: [{ key: 'cpu', label: 'CPU', color: getComputedStyle(document.documentElement).getPropertyValue('--s1') }],
+  points: [{ t: Date.now() - 60e3, cpu: 12 }, { t: Date.now(), cpu: 18 }],
+  t0: Date.now() - 60e3, t1: Date.now(), gap: 10e3, yMin: 0, warn: 80, error: 95,
+  fmt: v => v.toFixed(0) + ' %', tfmt: t => new Date(t).toLocaleTimeString(), endLabel: 'now', empty: 'no data yet' });
+```
+Call `chart(el, cfg)` again with new points to update it. **Angular**: call it in `ngAfterViewInit` (and on data changes)
+with an `ElementRef`'s `nativeElement`.
+
+**No bundler?** `<script src="…/dash-kit/dist/dash-kit.global.js"></script>` gives the same functions on `window.DashKit`
+(built by `npm run build`, done automatically before publishing).
+
 ## Versions
 Semver. Pin a minor (`^0.1`) — colour tokens and class names only change in a new minor while < 1.0.
 

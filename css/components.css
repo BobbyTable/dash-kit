@@ -232,3 +232,16 @@ a.go { font-size: 13px; padding: 6px 12px; border: 1px solid var(--line); backgr
 dl.kv dd, .t td.ver, .t .num, .t td.muted, .t td.ctr { font-size: 12px; }
 .t .hl { display: inline-flex; align-items: center; gap: 6px; }
 .t .hl .dot { width: 6px; height: 6px; }
+
+/* ── bar rows (.pbars > span > i; stacked: .pbars.stk > span > em > i) + their tooltip — markup.bars() / bars.installBarTips() ── */
+.pbars { position: relative; display: flex; align-items: stretch; height: 34px; touch-action: pan-y; }
+.pbars > span { flex: 1; display: flex; align-items: flex-end; padding: 0 1.5px; cursor: default; }   /* full-height hit target per month */
+.pbars i { flex: 1; background: var(--s1); border-radius: 1px; min-height: 2px; } .pbars i.z { background: var(--track); }
+.pbars i.bad { background: var(--error); }
+.pbars > span.on i { background: var(--ink); } .pbars > span.on i.z { background: var(--faint); }
+.pbars.stk { height: 120px; } .pbars.stk > span { padding: 0 1px; } @media (max-width: 700px) { .pbars.stk > span { padding: 0 .5px; } } .pbars.stk > span > em { flex: 1; display: flex; flex-direction: column; min-height: 2px; border-radius: 1px; overflow: hidden; }
+.pbars.stk em.z { background: var(--track); } .pbars.stk em i { min-height: 0; border-radius: 0; flex-basis: 0; }
+.pbars > span { transition: background-color .18s ease-out; }
+.pbars > span.on { background: color-mix(in srgb, color-mix(in srgb, var(--s2) 50%, var(--ink)) 15%, transparent); transition-duration: .1s; }   /* the whole column, not just the bar: a faint violet (in key with the theme), fading in */
+.pbars.stk > span.on em { filter: brightness(1.08); }   /* a touch: stronger brightening shifts the segment colours unevenly */
+.pbars .tip { top: auto; bottom: calc(100% + 6px); transform: translateX(-50%); }

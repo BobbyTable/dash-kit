@@ -85,6 +85,12 @@
     </tbody>
   </table></div>
 
+  <p class="ref">Line chart · chart(el, cfg) — hover for the crosshair + tooltip</p>
+  <div class="card plain"><div class="chart" id="demoChart"></div></div>
+
+  <p class="ref">Bar row · bars(cells) + installBarTips() — hover, tap or drag</p>
+  <div class="card plain" id="demoBars"></div>
+
   <p class="ref">Icons · icon(Node | 'Name', { size, class, label }) · Lucide, inline SVG, take the text colour</p>
   <div class="card plain" id="iconDemo" style="flex-direction:row; flex-wrap:wrap; gap:18px; align-items:center; font-size:15px"></div>
 
@@ -104,6 +110,16 @@
 <script src="/vendor/lucide.min.js" onerror="this.remove(); const s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.min.js'; s.onload = () => window.dispatchEvent(new Event('lucide')); document.head.append(s)"></script>
 <script type="module">
   import { icon } from './js/icons.js';
+  import { chart } from './js/chart.js';
+  import { bars } from './js/markup.js';
+  import { installBarTips } from './js/bars.js';
+  const now = Date.now(), css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const pts = Array.from({ length: 60 }, (_, i) => ({ t: now - (59 - i) * 60e3, cpu: 30 + 25 * Math.sin(i / 7) + 10 * Math.sin(i / 2.3) + (i > 48 ? 30 : 0) }));
+  chart(document.getElementById('demoChart'), { series: [{ key: 'cpu', label: 'CPU', color: css('--s1') }], points: pts, t0: now - 59 * 60e3, t1: now,
+    gap: 3 * 60e3, yMin: 0, yMax: 100, warn: 80, error: 95, fmt: v => v.toFixed(0) + ' %', tfmt: (t, tip) => new Date(t).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }), endLabel: 'now', empty: '' });
+  document.getElementById('demoBars').innerHTML = bars(Array.from({ length: 30 }, (_, i) => { const n = Math.round(40 + 30 * Math.sin(i / 3) + (i % 7 === 0 ? 40 : 0));
+    return { m: `day ${i + 1}`, n, v: n + ' GB', u: 'recorded' }; }));
+  installBarTips();
   const show = () => { document.getElementById('iconDemo').innerHTML =
     ['Cctv', 'HardDrive', 'Network', 'House', 'Activity', 'Radar'].map(n => `<span>${icon(n)} ${n}</span>`).join('')
     + `<span>${icon('CircleCheck', { class: 'ok' })} .ok</span><span>${icon('TriangleAlert', { class: 'warn' })} .warn</span>`
