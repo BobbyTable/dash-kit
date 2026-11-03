@@ -1,0 +1,37 @@
+/* @bobbytable/dash-kit · tab bar */
+/* ── tabs ── */
+.tabs { display: flex; gap: 2px; margin: 0 0 -1px -12px; align-self: flex-end; }   /* underline overlaps the header's bottom border */   /* line the first tab's text up with the page edge */
+.tabs a { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px 12px; font-size: 13px; font-weight: 600;
+  color: var(--mute); text-decoration: none; border-bottom: 2px solid transparent; }
+.tabs a[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--s1); }
+.tabs a { position: relative; gap: 0; }
+/* the label folds away instead of vanishing, so tabs grow/shrink smoothly when you switch */
+.tabs .lbl { display: inline-block; overflow: hidden; white-space: nowrap; max-width: var(--lw, 12em); margin-left: 6px; vertical-align: bottom;
+  transition: max-width .35s cubic-bezier(.16,1,.3,1), margin-left .35s cubic-bezier(.16,1,.3,1), opacity .25s ease; }   /* expo-out: fast start, long soft landing */
+@media (prefers-reduced-motion: reduce) { .tabs .lbl { transition: none; } }
+/* selected tab underline with a soft glow all around it — main tab bar and tabbed modals */
+.tabs a[aria-selected="true"]::after, .mtabs button[aria-selected="true"]::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px;
+  background: var(--s1); box-shadow: 0 0 16px 2px color-mix(in srgb, var(--s1) 60%, transparent); pointer-events: none; }
+/* desktop hover: icon + name lift a little and turn white (ink in light mode), a bar grows from the middle to half width;
+   pressing grows it to full, and on select it becomes the accent underline */
+@media (hover: hover) and (pointer: fine) {
+  .tabs a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px; background: var(--tabhi);
+    transform: scaleX(0); transition: transform .28s cubic-bezier(.16,1,.3,1), background-color .3s, box-shadow .3s; pointer-events: none; }
+  .tabs a[aria-selected="true"]::after { transform: scaleX(1); }
+  .tabs a:not([aria-selected="true"]):hover::after { transform: scaleX(.5); }
+  .tabs a:not([aria-selected="true"]):active::after { transform: scaleX(1); }
+  .tabs a .ic { transition: transform .2s ease; }
+  .tabs .lbl { transition: max-width .35s cubic-bezier(.16,1,.3,1), margin-left .35s cubic-bezier(.16,1,.3,1), opacity .25s ease, transform .2s ease; }
+  .tabs a { transition: color .2s ease; }
+  .tabs a:not([aria-selected="true"]):hover { color: var(--tabhi); }
+  .tabs a:not([aria-selected="true"]):hover .ic, .tabs a:not([aria-selected="true"]):hover .lbl { transform: translateY(-2px); }
+}
+@media (prefers-reduced-motion: reduce) { .tabs a::after, .tabs a .ic, .tabs a .lbl { transition: none; } }
+.tabs a[aria-selected="true"], .mtabs button[aria-selected="true"] { border-bottom-color: transparent; } .mtabs button { position: relative; }
+.tabs a .ic { width: 16px; height: 16px; opacity: .7; }
+@media (max-width: 560px) { .tabs a:not([aria-selected="true"]) .lbl { max-width: 0; margin-left: 0; opacity: 0; } .tabs a { padding: 6px 10px 12px; } }   /* phone: icons, current tab named */
+.tabs a { white-space: nowrap; }
+@media (min-width: 561px) { .tabs a { padding-top: 10px; padding-bottom: 16px; } }   /* desktop: taller tabs */
+@media (min-width: 561px) { header { margin-bottom: 32px; } }   /* desktop: more air between the tab bar and the page */
+@media (max-width: 560px) { .tabs { min-width: 0; flex: 1; overflow-x: auto; scrollbar-width: none; margin-right: -16px; } .tabs::-webkit-scrollbar { display: none; }
+  .tabs a { padding: 6px 8px 12px; } }   /* phone: 10 tabs — tighter, and the bar swipes sideways if it still doesn't fit */

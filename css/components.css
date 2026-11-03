@@ -1,0 +1,234 @@
+/* @bobbytable/dash-kit · banner, cards, history strips, range picker, charts, tables, tooltips */
+/* ── banner ── */
+.banner { padding: 20px 26px; margin-bottom: 8px; border-left: 6px solid var(--unknown); background: var(--unknown-bg); }
+.banner.ok { border-color: var(--ok); background: var(--ok-bg); }
+.banner.warn { border-color: var(--warn); background: var(--warn-bg); }
+.banner.error { border-color: var(--error); background: var(--error-bg); }
+.headline { font-size: 26px; font-weight: 700; letter-spacing: -.02em; line-height: 1.15; }
+.chips { display: flex; gap: 4px 8px; flex-wrap: wrap; margin-top: 12px; }   /* row gap tighter than column gap: wrapped pills stay one group */
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px 3px 8px; border-radius: 4px;
+  background: color-mix(in srgb, var(--card) 45%, transparent); font-size: 13px; font-weight: 600; }
+.chip.zero { opacity: .45; font-weight: 500; }
+.dot { width: 9px; height: 9px; border-radius: 50%; flex: none; display: inline-block; background: var(--unknown); }
+.dot.ok { background: var(--ok); } .dot.warn { background: var(--warn); }
+.dot.error { background: var(--error); } .dot.unknown { background: var(--unknown); }
+
+h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .07em; color: var(--mute);
+  margin: 32px 0 10px; font-weight: 650; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+/* collapsible groups: tap the header (≥44 px tall) to fold it; state kept per header in localStorage */
+h2.fold { min-height: 44px; padding: 6px 40px 6px 0; margin-bottom: 4px; cursor: pointer; user-select: none;
+  position: relative; width: 100%; box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent; border-bottom: 1px solid transparent; transition: border-color .2s; }
+h2.fold.collapsed, h2.fold.collapsing { border-bottom-color: var(--line); }   /* the line only marks a folded group */
+/* header controls (Hardware's range picker + its note) belong to the content: gone while folded */
+h2.collapsed .seg, h2.collapsing .seg, h2.collapsed #rangeNote, h2.collapsing #rangeNote { display: none; }
+h2.fold .seg { animation: fadein .2s; }
+@keyframes fadein { from { opacity: 0; } }
+h2.fold:hover { color: var(--ink); }
+/* hover: a faint tint behind the header, reaching a little past the text on both sides; fades quick in, slower out */
+h2.fold::before { content: ""; position: absolute; inset: 0 -10px; z-index: -1; background: transparent; transition: background-color .25s ease-out; pointer-events: none; }
+@media (hover: hover) { h2.fold:hover::before { background: color-mix(in srgb, var(--track) 70%, transparent); transition-duration: .1s; } }
+@media (prefers-reduced-motion: reduce) { h2.fold::before { transition: none; } }
+h2 > .hchev { position: absolute; right: 0; top: 6px; display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; color: var(--mute); transition: transform .15s; }
+h2 > .hchev .ic { width: 20px; height: 20px; }
+h2.collapsed > .hchev, h2.collapsing > .hchev { transform: rotate(-90deg); }
+section > h2.collapsed ~ *, h2.collapsed + :not(h2) { display: none !important; }
+h2 .aside { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--faint); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 12px; }
+.grid.wide { grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); }
+
+/* ── card ── */
+.card { background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow);
+  padding: 14px 16px 12px 24px; display: flex; flex-direction: column; gap: 6px; position: relative; min-width: 0; }
+.card::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--unknown); }
+.card.ok::before { background: var(--ok); } .card.warn::before { background: var(--warn); }
+.card.error::before { background: var(--error); } .card.plain::before { background: var(--line); }
+.card .top { display: flex; align-items: center; gap: 8px; }
+.card .domain { font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: var(--faint); font-weight: 600; }
+.pill { margin-left: auto; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+  padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+.pill.ok { color: var(--ok); background: var(--ok-bg); } .pill.warn { color: var(--warn); background: var(--warn-bg); }
+.pill.error { color: var(--error); background: var(--error-bg); } .pill.unknown { color: var(--mute); background: var(--unknown-bg); }
+.card .title { font-size: 16px; font-weight: 650; line-height: 1.25; }
+.card .value { font-size: 28px; font-weight: 700; letter-spacing: -.02em; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.card .value small { font-size: 14px; font-weight: 600; color: var(--mute); letter-spacing: 0; }
+.card.warn .value.lvl { color: var(--warn); } .card.error .value.lvl { color: var(--error); }
+.card .comment { color: var(--mute); font-size: 13px; }
+.card.warn .comment, .card.error .comment { color: var(--ink); }
+.comment .items { display: flex; flex-wrap: wrap; gap: 4px; max-height: 88px; overflow-y: auto; margin: 4px 0; padding-right: 2px; }
+.comment .items span { background: var(--track); padding: 2px 7px; border-radius: 3px; font-size: 12.5px; line-height: 1.45; }
+.card.warn .comment .items span { background: color-mix(in srgb, var(--warn) 16%, transparent); }
+.card.error .comment .items span { background: color-mix(in srgb, var(--error) 16%, transparent); }
+.comment .lead { display: block; } .comment .lead::first-letter { text-transform: uppercase; }
+.comment small { display: block; color: var(--mute); font-size: 12px; }
+.card .sub { color: var(--mute); font-size: 12px; min-height: 1.45em; }
+
+/* key/value detail lists inside panel cards */
+dl.kv { display: grid; grid-template-columns: auto 1fr; gap: 3px 14px; margin: 6px 0 0; font-size: 13px; }
+dl.kv dt { color: var(--faint); }
+dl.kv dd { margin: 0; font-variant-numeric: tabular-nums; min-width: 0; overflow-wrap: anywhere; }
+.flag { color: var(--warn); font-weight: 600; }
+.bad { color: var(--error); font-weight: 600; }
+
+/* ── history strip (signal cards) ── */
+.hist { margin-top: auto; padding-top: 6px; }
+.strip { display: flex; gap: 2px; height: 20px; margin: -6px 0; align-items: center; touch-action: pan-y; }   /* taller hit area, 8 px cells */
+.strip i { flex: 1; height: 8px; border-radius: 2px; background: var(--none); }
+.strip i.on { outline: 2px solid var(--ink); outline-offset: 1px; }
+.saxis { display: flex; justify-content: space-between; font: 11px var(--mono); color: var(--faint); margin-top: 4px; }
+.card, .tcard, .banner, main h2 { transition: opacity .45s ease-out, transform .45s cubic-bezier(.2,.7,.2,1); }
+main h2.fold { transition: opacity .45s ease-out, transform .45s cubic-bezier(.2,.7,.2,1), border-color .2s; }   /* keeps the fold line's own fade */
+.card.pre, .tcard.pre, .banner.pre, main h2.pre { opacity: 0; transform: translateY(18px); }
+@media (prefers-reduced-motion: reduce) { .card, .tcard, .banner, main h2, main h2.fold { transition: none; } }
+#ftip { position: fixed; z-index: 50; transform: translate(-50%, calc(-100% - 10px)); }
+.tip { overflow: hidden; transition: opacity .16s ease, left .18s ease-out, top .18s ease-out, width .18s ease-out; } .tip.off { opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .tip { transition: none; } }
+.strip i.ok { background: var(--ok); } .strip i.warn { background: var(--warn); }
+.strip i.error { background: var(--error); } .strip i.unknown { background: var(--unknown); }
+.strip i.now { flex: 0 0 18px; opacity: 1 !important; height: 12px; margin-top: -2px; border-radius: 3px; }
+/* "now" glows in its own level colour, like the selected tab line */
+.strip i.now { --g: var(--none); box-shadow: 0 0 10px 1px color-mix(in srgb, var(--g) 70%, transparent); }
+.strip i.now.ok { --g: var(--ok); } .strip i.now.warn { --g: var(--warn); } .strip i.now.error { --g: var(--error); } .strip i.now.unknown { --g: var(--unknown); }
+.streak { font-size: 12px; color: var(--faint); margin-top: 5px; }
+.streak b { color: var(--mute); font-weight: 600; }
+
+/* ── range control ── */
+.seg { display: inline-flex; border: 1px solid var(--line); background: transparent; }   /* unselected: transparent; the picked one gets a faint accent tint */
+.seg button { border: 0; border-right: 1px solid var(--line); padding: 4px 10px; font-size: 12px; color: var(--mute); background: transparent; }
+.seg button:last-child { border-right: 0; }
+.seg button[aria-pressed="true"] { background: color-mix(in srgb, var(--s1) 13%, transparent); color: var(--ink); font-weight: 600; }
+.livedot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); display: inline-block; margin-right: 5px; vertical-align: 1px; }
+.livedot.off { background: var(--faint); }
+
+/* ── charts ── */
+.legend { display: flex; gap: 12px; font-size: 12px; color: var(--mute); margin-left: auto; }
+.legend span { display: inline-flex; align-items: center; gap: 5px; }
+.legend i { width: 12px; height: 2px; display: inline-block; }
+/* charts are for tapping + sliding (tooltips), never for text selection or the iOS long-press menu */
+.chart, .mchart, .spark, .strip, .hist, .pbars, .meter, .tip, #tiles .card { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }
+.chart { position: relative; margin-top: 4px; }
+.chart canvas { display: block; width: 100%; height: 104px; touch-action: pan-y; }
+.chart .empty { position: absolute; inset: 0 0 16px; display: flex; align-items: center; justify-content: center;
+  color: var(--faint); font-size: 12px; text-align: center; padding: 0 12px; }
+.chart .empty[hidden], .tip[hidden] { display: none; }
+.chart .empty span { background: var(--card); padding: 2px 6px; }
+.tip { position: absolute; top: 0; pointer-events: none; background: var(--card); border: 1px solid var(--line);
+  box-shadow: 0 6px 22px rgba(0,0,0,.35), 0 1px 3px rgba(0,0,0,.25); padding: 6px 9px; font-size: 12px; white-space: nowrap; z-index: 2; }
+.tip .t { color: var(--faint); margin-bottom: 6px; }   /* the heading (date / time), with air under it */
+.tip .t + .r b { font-size: 15px; }                   /* the main figure, a size up */
+.tip .r:not(.lg) + .r.lg { margin-top: 5px; }         /* and space before a legend under it */
+.tip .r { display: flex; align-items: center; gap: 6px; }
+.tip .r i { width: 10px; height: 2px; display: inline-block; }
+.tip .r b { font-variant-numeric: tabular-nums; }
+.tip .r.lg { gap: 7px; } .tip .r.lg i { flex: none; width: 8px; height: 8px; min-height: 0; border-radius: 50%; } .tip .r.lg span { flex: 1; } .tip .r.lg b { margin-left: 12px; font-weight: 600; }
+.tip .r span { color: var(--mute); }
+
+.meter { height: 8px; background: var(--track); margin: 4px 0 2px; position: relative; display: flex; }
+.meter i { display: block; height: 100%; background: var(--s1); }
+.meter i.warn { background: var(--warn); } .meter i.error { background: var(--error); }
+.meter b { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; opacity: .55; }
+.meter b.warn { background: var(--warn); } .meter b.error { background: var(--error); }
+.value.t-warn { color: var(--warn); } .value.t-error { color: var(--error); }
+
+/* ── tables (containers, checks): full width, one row per thing ── */
+.tcard { background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); overflow-x: auto; }
+table.t { width: 100%; border-collapse: collapse; font-size: 13px; }
+.t th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: var(--faint);
+  font-weight: 600; padding: 9px 12px 7px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.t td { padding: 9px 12px; border-top: 1px solid var(--line); vertical-align: top; }
+.t tbody tr:first-child td { border-top: 0; }
+.t tr.grp td { border-top: 2px solid var(--line); }
+.t th:first-child, .t td:first-child { padding-left: 20px; }
+.t td:first-child { box-shadow: inset 3px 0 var(--unknown); }
+.t tr.ok td:first-child { box-shadow: inset 3px 0 var(--ok); } .t tr.warn td:first-child { box-shadow: inset 3px 0 var(--warn); }
+.t tr.error td:first-child { box-shadow: inset 3px 0 var(--error); }
+.tag { display: inline-block; padding: 1px 7px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+.ustrip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0 4px; }
+.ucell { border: 1px solid var(--line, rgba(128,128,128,.3)); padding: 8px 10px; display: flex; flex-direction: column; gap: 2px; }
+.ucell .ul { font-size: 12px; opacity: .7; text-transform: uppercase; letter-spacing: .04em; }
+.ucell b { font-size: 22px; line-height: 1.1; }
+.ucell .us { font-size: 12px; opacity: .7; }
+button.ucell { font: inherit; color: inherit; background: transparent; text-align: left; cursor: pointer; margin: 0; min-height: 44px; }
+button.ucell:hover { border-color: var(--mute); }
+.ucell .ul { display: flex; align-items: center; justify-content: space-between; }
+.ucell .ul .ic { width: 14px; height: 14px; }
+/* update modal: list + terminal */
+.ulist { width: 100%; border-collapse: collapse; font-size: 13px; }
+.ulist td { padding: 6px 8px; border-top: 1px solid var(--line); vertical-align: top; }
+.ulist td.v { font-family: var(--mono); font-size: 12px; overflow-wrap: anywhere; }
+/* name (bold, full colour) › description (smaller, muted) › image ref (mono, faint) — three clearly different levels */
+.ulist td > b { font-size: 14px; font-weight: 500; color: var(--ink); }
+.ulist .udesc { font-size: 12px; line-height: 1.35; color: var(--mute); margin-top: 2px; }
+.ulist .uimg { font: 11px var(--mono); color: var(--faint); margin-top: 3px; overflow-wrap: anywhere; }
+.ulist .vo, .ulist .vn { white-space: nowrap; }
+.ulist .vs { font-family: system-ui, sans-serif; font-size: 12px; color: var(--faint); margin-left: 6px; } .ulist .vs.err { color: var(--warn); font-style: italic; }   /* status words ≠ version text */   /* a version never breaks in the middle */
+/* phone: old over new, digits aligned — the old line is indented by the width of "→ " (2ch, mono), and the
+   highlighted new version keeps its text in place (colour pad drawn with box-shadow instead of padding) */
+@media (max-width: 560px) { .ulist .vo, .ulist .vn { display: block; } .ulist .vo { color: var(--mute); padding-left: 2ch; }
+  .ulist .v > .sub { display: block; padding-left: 2ch; margin-left: 0; } }   /* "current" / "couldn't check" line up where a new version would (after "→ ") */
+.ulist .vn .tag { padding-left: 0; padding-right: 0; box-shadow: -4px 0 0 var(--warn), 4px 0 0 var(--warn); }
+.ubar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 4px 0 14px; }
+.ubar .go, .ulist .go { display: inline-flex; align-items: center; gap: 6px; }
+.ubar .go .ic, .ulist .go .ic { width: 15px; height: 15px; }
+.ubar .go { min-height: 36px; }   /* the dashboard's normal bordered buttons, just tap-sized */
+.ulist .go { margin-top: 8px; padding: 6px 12px; min-height: 36px; font-size: 13px; white-space: nowrap; }
+.ubar .go:disabled { opacity: .5; cursor: default; }
+.uterm { background: #111; color: #ddd; margin: 0; padding: 10px 12px; height: min(60vh, 560px); overflow: auto;
+  font: 12px/1.45 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.uterm .h { color: var(--s1); font-weight: 700; } .uterm .cmd { color: var(--faint); }
+.uterm .e { color: var(--error); } .uterm .w { color: var(--warn); }
+.ucell.hot { border-color: var(--warn); background: color-mix(in srgb, var(--warn) 14%, transparent); }
+.ucell.hot b { color: var(--warn); }
+.loading { padding: 28vh 2px 0; text-align: center; color: var(--faint); font-size: 15px; font-weight: 400; }   /* plain text while a tab loads, no card */
+.value .pc { font-size: .68em; margin-left: .16em; }   /* % hugs its number, a size down */
+.tag.up, .tag.warn { background: var(--warn); color: var(--tag-ink); }
+.tag.bad { background: var(--error); color: var(--tag-ink); }   /* inverted label for a dangerous number (bad sectors, SMART failed…) */
+a.go { font-size: 13px; padding: 6px 12px; border: 1px solid var(--line); background: var(--card); color: var(--ink); text-decoration: none; }   /* white on Alucard's amber; Dracula's yellow is too pale for white */
+.t .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.t .nw { white-space: nowrap; }
+.t b { font-weight: 600; }
+.t .s { display: block; color: var(--faint); font-size: 12px; }
+.t .muted { color: var(--mute); }
+.t td.val { font-weight: 650; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.t tr.warn td.val { color: var(--warn); } .t tr.error td.val { color: var(--error); }
+.t td.h { width: 250px; }
+.t tr.go { cursor: pointer; } @media (hover: hover) { .t tr.go:hover td { background: var(--track); } } .t td.h { position: relative; }
+.rowgo { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); color: var(--faint); display: inline-flex; } .rowgo .ic { width: 15px; height: 15px; }
+.t td.val .vd { display: none; }
+@media (max-width: 700px) {   /* phone: detail drops below the value; the check name keeps a fair share of the width */
+  #healthy .t .dcol { display: none; } #healthy .t td:first-child { width: 46%; }
+  #healthy .t td.val { white-space: normal; } #healthy .t td.val .vd { display: block; margin-top: 3px; font-family: system-ui, sans-serif; font-weight: 400; font-size: 12px; color: var(--mute); overflow-wrap: anywhere; } }
+.t td.h .hist { padding-top: 4px; }
+.t .pm { display: none; }
+@media (max-width: 700px) {   /* phone, Overview containers: two columns, two lines each — app over container, state over version */
+  .ctrs td:first-child, .ctrs th:first-child, .ctrs .ver, .ctrs th:nth-child(4) { display: none; }
+  .ctrs .pm { display: block; } .ctrs td.ctr b.pm { font-family: system-ui, sans-serif; font-size: 13.5px; }
+  .ctrs td.ctr { box-shadow: inset 3px 0 var(--unknown); } .ctrs tr.ok td.ctr { box-shadow: inset 3px 0 var(--ok); }   /* the stripe moves to the first visible cell */
+  .ctrs tr.warn td.ctr { box-shadow: inset 3px 0 var(--warn); } .ctrs tr.error td.ctr { box-shadow: inset 3px 0 var(--error); } .ctrs td.ctr b.pm + .cn { display: block; margin-top: 2px; font-size: 12px; color: var(--mute); }
+  .ctrs td.ctr { overflow-wrap: anywhere; width: 55%; } .ctrs td.st { white-space: normal; }
+  .ctrs .pv { margin-top: 2px; font: 12px var(--mono); color: var(--mute); overflow-wrap: anywhere; } .ctrs .pv .tag { display: inline-block; margin-top: 3px; } }
+.t td.h .streak { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px; }
+.t .mini { display: flex; margin-top: 6px; }
+@media (max-width: 700px) { .t .opt { display: none; } }
+.ts .tsn { display: flex; gap: 10px; align-items: flex-start; } .ts .tsn > .ic { width: 16px; height: 16px; margin-top: 2px; color: var(--mute); flex: none; }
+.ts .tsn b { font-weight: 500; display: block; } .ts .tsn small, .ts .tss { display: block; color: var(--mute); font-size: 12px; }
+.ts td.mono { font: 12.5px var(--mono); } .ts tr[data-ts] { cursor: pointer; } @media (hover: hover) { .ts tr[data-ts]:hover td { background: var(--track); } }
+.tscopy { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: -4px 0 18px; } .tscopy code { margin-left: 4px; }
+.tscopy .go { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; } .tscopy .go .ic { width: 15px; height: 15px; }
+.tsum { margin: 0 0 16px; font-size: 14px; line-height: 1.5; max-width: 75ch; } .mbody .mono { font: 12.5px var(--mono); user-select: all; } .ts .mob { display: none; } .ts .mob .flag { font-weight: 600; }
+.ts .tsn b { white-space: nowrap; } .ts td.st .hl { white-space: nowrap; }
+@media (max-width: 700px) { .ts .mob { display: block; } } .ts .s { color: var(--mute); font-size: 12px; width: fit-content; border-bottom: 1px dotted currentColor; cursor: help; }
+
+/* full-width panel card with its details in two columns */
+.span { grid-column: 1 / -1; }
+@media (min-width: 760px) { .span dl.kv { grid-template-columns: auto 1fr auto 1fr; } }
+
+/* data in mono (values, numbers, versions, details); labels stay in the sans */
+.card .value, .t td.val, .t .num, .t td.ver, dl.kv dd, .meta, .chip, .tip .r b, .tip .t, .ctrnum,
+.t td.muted:not(:first-child), .t td.ctr { font-family: var(--mono); }
+.card .value { letter-spacing: -.03em; font-weight: 650; }
+.card .value small { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+dl.kv dd, .t td.ver, .t .num, .t td.muted, .t td.ctr { font-size: 12px; }
+.t .hl { display: inline-flex; align-items: center; gap: 6px; }
+.t .hl .dot { width: 6px; height: 6px; }

@@ -1,0 +1,40 @@
+/* @bobbytable/dash-kit · pop-up (dialog#modal), log drawer, PIN dialog */
+/* log drawer */
+.logs { position: fixed; z-index: 30; top: 0; right: 0; bottom: 0; width: min(820px, 100vw); display: flex; flex-direction: column;
+  background: var(--card); border-left: 1px solid var(--line); box-shadow: -12px 0 40px -12px rgba(0,0,0,.35); }
+.logs[hidden] { display: none; }
+.logs.inmodal { position: static; width: auto; flex: 1; min-height: 0; border: 0; box-shadow: none; z-index: auto; background: none; }
+.logs.inmodal #logClose, .logs.inmodal #logName { display: none; } .logs.inmodal .lhead { padding: 8px 20px; } .logs.inmodal #logBody { padding: 10px 20px 24px; }
+@media (max-width: 560px) { .logs.inmodal .lhead { padding: 8px 16px; } .logs.inmodal #logBody { padding: 10px 16px 20px; } }
+#modal:has(.mtabs) .mhead { border-bottom: 0; padding-bottom: 6px; }   /* tabs sit right under the title, one line below them only */
+/* tabs live in the head (outside the scrolling body), so they stay put while the content scrolls */
+.mtabs { display: flex; gap: 4px; padding: 0 20px; border-bottom: 1px solid var(--line); flex: none; }
+@media (max-width: 560px) { .mtabs { padding: 0 16px; } }
+/* flush: a tab whose content fills the pane edge to edge (the container logs) — no padding, no card, fixed modal height */
+#modal.flush { height: min(88vh, 1000px); }
+@media (max-width: 560px) { #modal.flush { height: calc(100dvh - 20px); } }
+#modal.flush .mbody { padding: 0; flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+#modal.flush #modalContent { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.mtabs button { border: 0; background: none; color: var(--mute); padding: 10px 12px 9px; display: inline-flex; gap: 6px; align-items: center; font-weight: 600; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.mtabs button .ic { width: 15px; height: 15px; } .mtabs button[aria-selected="true"] { color: var(--ink); }
+.dsec .go.upd { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; } .dsec .go.upd .ic { width: 15px; height: 15px; }
+.lhead { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.lhead b { font-family: var(--mono); }
+.lhead .follow { font-size: 12px; color: var(--mute); display: inline-flex; gap: 5px; align-items: center; }
+#logClose { padding: 5px 7px; } #logClose .ic { width: 16px; height: 16px; }
+#logBody { flex: 1; margin: 0; overflow: auto; padding: 10px 16px 24px; font: 12px/1.5 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+#logBody .ts { color: var(--faint); } #logBody .e { color: var(--error); } #logBody .w { color: var(--warn); }
+#logBody .hl { background: color-mix(in srgb, var(--s2) 30%, transparent); }
+#logBody .x { display: none; }
+/* PIN dialog */
+#pinDlg { border: 1px solid var(--line); background: var(--card); color: var(--ink); padding: 18px 20px; max-width: 360px; box-shadow: var(--shadow); }
+#pinDlg::backdrop { background: rgba(0,0,0,.45); }
+#pinDlg .t { font-weight: 650; display: flex; align-items: center; gap: 8px; }
+#pinDlg p { font-size: 12.5px; color: var(--mute); }
+#pinIn { font: 20px var(--mono); letter-spacing: .3em; width: 100%; padding: 8px 10px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); }
+#pinDlg .row { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
+button.primary { background: var(--s1); color: var(--card); border-color: var(--s1); font-weight: 600; }
+
+.ic { width: 1.15em; height: 1.15em; flex: none; vertical-align: -.2em; }
+.card .domain, h2, h1, button { display: inline-flex; align-items: center; gap: 6px; }
+h2 > .ic { width: 18px; height: 18px; color: var(--mute); }

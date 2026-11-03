@@ -1,0 +1,41 @@
+/* @bobbytable/dash-kit · colour tokens (Dracula dark / Alucard light) + JetBrains Mono */
+@font-face { font-family: "JetBrains Mono"; font-weight: 100 800; font-display: swap;
+  src: url(../fonts/jetbrains-mono-latin-wght.woff2) format("woff2"); }
+/* Dracula (dark) + Alucard, its official light variant — accents straight from the spec;
+   card/page tints are accents mixed into the card colour */
+:root {
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --bg: #f3efde; --card: #fffbeb; --ink: #1f1f1f; --mute: #6c664b; --faint: #a7a28b; --line: #e5e0ce;
+  --tabhi: var(--ink);   /* tab hover text + bar */
+  --ok: #14710a; --warn: #846e15; --error: #a3144d; --unknown: #a7a28b; --none: #ede9d8;
+  --ok-bg: #e3ead0; --warn-bg: #f0ead1; --error-bg: #f4dfd8; --unknown-bg: #f3efde;
+  --s1: #036a96; --s2: #7b4fd1; --grp: #a3144d; --grid: #ede9d8; --track: #ede9d8; --tag-ink: #fff;
+  --shadow: 0 1px 2px rgba(60,50,20,.05), 0 10px 32px -6px rgba(60,50,20,.14);   /* wide + soft, warm like the cards */
+  --nshadow: rgba(60,50,20,.08);                  /* network diagram nodes */
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #21222c; --card: #282a36; --ink: #f8f8f2; --mute: #adb5cb; --faint: #6272a4; --line: #44475a;
+    --tabhi: #fff;
+    --ok: #76ef94; --warn: #f1fa8c; --error: #ff79c6; --unknown: #6272a4; --none: #393b4c;
+    --ok-bg: #2e4740; --warn-bg: #45452c; --error-bg: #4a374d; --unknown-bg: #303241;
+    --s1: #8be9fd; --s2: #bd93f9; --grp: #ff79c6; --grid: #393b4c; --track: #393b4c; --tag-ink: #282a36;
+    --shadow: 0 1px 2px rgba(0,0,0,.25), 0 12px 36px -6px rgba(0,0,0,.45);
+    --nshadow: rgba(0,0,0,.3);
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+/* row/tile hover tints only where a real pointer hovers: on touch, :hover sticks to whatever a scroll started on */
+/* …and they fade: quick in, a touch slower out */
+@media (hover: hover) {
+  .t tr.go td, .ts tr[data-ts] td, .dkrow, .topics summary { transition: background-color .25s ease-out; }
+  .t tr.go:hover td, .ts tr[data-ts]:hover td, .dkrow:hover, .topics summary:hover { transition-duration: .1s; }
+  #tiles .card { transition: border-color .25s ease-out; } #tiles .card:hover { transition-duration: .1s; }
+}
+@media (prefers-reduced-motion: reduce) { .t tr.go td, .ts tr[data-ts] td, .dkrow, .topics summary, #tiles .card { transition: none; } }
+html { touch-action: manipulation; -webkit-tap-highlight-color: transparent; overflow-x: clip; scrollbar-gutter: stable; }   /* clip (here + body): full-bleed header uses 100vw, which includes the scrollbar → no stray 5 px x-scroll; gutter: tabs don't jump sideways when a page grows a scrollbar */   /* no double-tap zoom → taps fire immediately; pinch-zoom still works */
+body { margin: 0; background: var(--bg); color: var(--ink);
+  font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; overflow-x: clip; }
+/* scrollbars in the theme: thumb = Dracula comment/selection, track = page */

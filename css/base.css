@@ -1,0 +1,27 @@
+/* @bobbytable/dash-kit · page layout, header, buttons, scrollbars */
+* { scrollbar-width: thin; scrollbar-color: var(--sb, var(--faint)) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; } ::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--sb, var(--faint)); border-radius: 5px; border: 2px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: var(--s2); background-clip: padding-box; } ::-webkit-scrollbar-corner { background: transparent; }
+main { max-width: 1120px; margin: 0 auto; padding: 24px 16px 48px; }
+
+header { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: -24px calc(50% - 50vw) 16px;
+  padding: 12px max(16px, calc(50vw - 544px)) 0;   /* full-bleed bar, content aligned with the page column; tabs sit on the bottom line */
+  position: sticky; top: 0; z-index: 20; background: var(--bg); border-bottom: 1px solid var(--line); }
+body.nettab main { padding-bottom: 0; }
+h1 { font-size: 15px; margin: 0; font-weight: 650; color: var(--mute); }
+.meta { color: var(--mute); font-size: 13px; }
+.meta.stale, #refresh.stale { color: var(--warn); font-weight: 600; }
+#refresh #gen { font-family: var(--mono); font-size: 12px; } #refresh { white-space: nowrap; flex: none; }
+.spacer { flex: 1; }
+button { font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 0; cursor: pointer;
+  border: 1px solid var(--line); background: var(--card); color: var(--ink); }
+button:disabled { opacity: .6; cursor: progress; }
+/* every bordered button / button-link across the app: a lighter fill on hover, fading quick in, slower out */
+@media (hover: hover) {
+  button, a.go { transition: background-color .25s ease-out; }
+  button:not(:disabled):not(.mtabs button):not(.seg button):hover, a.go:hover { background: color-mix(in srgb, var(--card) 82%, #fff); transition-duration: .1s; }
+  .seg button:not([aria-pressed="true"]):hover { background: color-mix(in srgb, var(--ink) 6%, transparent); transition-duration: .1s; }
+}
+button.mini { margin-top: 10px; padding: 3px 10px; font-size: 12px; }
+.err { color: var(--error); padding: 0 0 12px; }
