@@ -40,7 +40,7 @@ In `app/layout.tsx` (or `pages/_app.tsx`): `import '@bobbytable/dash-kit/index.c
 
 ### Plain HTML (CDN)
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@bobbytable/dash-kit@0.1/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@bobbytable/dash-kit@0.4/index.css">
 ```
 
 ## Icons
@@ -89,7 +89,7 @@ with an `ElementRef`'s `nativeElement`.
 Open `example.html` through any static server to see the result.
 
 ## Versions
-Semver. Pin a minor (`^0.1`) — colour tokens and class names only change in a new minor while < 1.0.
+Semver. Pin a minor (`^0.4`) — colour tokens and class names only change in a new minor while < 1.0.
 
 ## Licence
 MIT (`LICENSE`). JetBrains Mono (in `fonts/`) is under the SIL Open Font License 1.1 (`fonts/OFL.txt`).
