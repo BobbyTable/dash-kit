@@ -12,6 +12,9 @@ JetBrains Mono, cards, charts, tables, tab bar and pop-ups. Light/dark follows `
 | `css/modal.css` | pop-up (`dialog#modal`), log drawer, PIN dialog |
 | `index.css` | all of the above, in order |
 
+**`example.html` is the reference**: every component with its exact markup and the class names that drive it — open it next to
+your editor (light/dark follows the system setting).
+
 Load order matters (later files build on earlier ones). Use `index.css`, or the parts you need **in this order**.
 Only `theme.css` if you just want the colours and font.
 

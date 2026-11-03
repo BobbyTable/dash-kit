@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dash-kit · reference</title>
+<!-- in a project: npm install @bobbytable/dash-kit, then import '@bobbytable/dash-kit/index.css'
+     or link https://cdn.jsdelivr.net/npm/@bobbytable/dash-kit@0.1/index.css -->
+<link rel="stylesheet" href="index.css">
+<style>
+  /* only for this page: section labels */
+  .ref { font: 11px var(--mono); color: var(--faint); margin: 36px 0 8px; text-transform: uppercase; letter-spacing: .08em; }
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+  .sw { border: 1px solid var(--line); background: var(--card); font: 11px var(--mono); color: var(--mute); }
+  .sw i { display: block; height: 34px; }
+  .sw span { display: block; padding: 5px 8px; }
+</style>
+</head>
+<body>
+<main>
+  <!-- header: title, tab bar (aria-selected marks the current tab) -->
+  <header>
+    <h1>dash-kit</h1>
+    <nav class="tabs" role="tablist">
+      <a href="#" role="tab" aria-selected="true"><span class="lbl">Overview</span></a>
+      <a href="#" role="tab"><span class="lbl">Network</span></a>
+      <a href="#" role="tab"><span class="lbl">Storage</span></a>
+    </nav>
+  </header>
+
+  <p class="ref">Colour tokens · var(--…) · follow prefers-color-scheme</p>
+  <div class="swatches">
+    <div class="sw"><i style="background:var(--bg)"></i><span>--bg</span></div>
+    <div class="sw"><i style="background:var(--card)"></i><span>--card</span></div>
+    <div class="sw"><i style="background:var(--ink)"></i><span>--ink</span></div>
+    <div class="sw"><i style="background:var(--mute)"></i><span>--mute</span></div>
+    <div class="sw"><i style="background:var(--faint)"></i><span>--faint</span></div>
+    <div class="sw"><i style="background:var(--line)"></i><span>--line</span></div>
+    <div class="sw"><i style="background:var(--ok)"></i><span>--ok</span></div>
+    <div class="sw"><i style="background:var(--warn)"></i><span>--warn</span></div>
+    <div class="sw"><i style="background:var(--error)"></i><span>--error</span></div>
+    <div class="sw"><i style="background:var(--unknown)"></i><span>--unknown</span></div>
+    <div class="sw"><i style="background:var(--s1)"></i><span>--s1 accent</span></div>
+    <div class="sw"><i style="background:var(--s2)"></i><span>--s2 accent</span></div>
+  </div>
+
+  <p class="ref">Banner · .banner.ok|warn|error + .chips</p>
+  <div class="banner warn">
+    <div class="headline"><span>2 things need a look</span></div>
+    <div class="chips"><span class="chip"><span class="dot warn"></span>1 warning</span><span class="chip"><span class="dot error"></span>1 error</span><span class="chip zero">12 ok</span></div>
+  </div>
+
+  <p class="ref">Cards · .grid > .card.ok|warn|error|plain — .top (.domain + .pill) · .title · .value.lvl · .comment</p>
+  <div class="grid">
+    <div class="card ok"><div class="top"><span class="domain">Host</span><span class="pill ok">ok</span></div>
+      <div class="title">CPU</div><div class="value lvl">12 %</div><div class="comment">8 cores, load 0.9</div></div>
+    <div class="card warn"><div class="top"><span class="domain">Storage</span><span class="pill warn">warn</span></div>
+      <div class="title">Camera disk</div><div class="value lvl">86 % <small>full</small></div>
+      <div class="meter"><i style="width:85%"></i><i class="warn" style="width:1%"></i><b class="warn" style="left:85%"></b><b class="error" style="left:95%"></b></div>
+      <div class="comment">above the 85 % mark</div></div>
+    <div class="card error"><div class="top"><span class="domain">Backups</span><span class="pill error">error</span></div>
+      <div class="title">Photos → B2</div><div class="value lvl">3 d</div><div class="comment">last snapshot 3 days ago</div></div>
+    <div class="card plain"><div class="top"><span class="domain">Facts</span></div>
+      <div class="title">Key / value list</div>
+      <dl class="kv"><dt>Model</dt><dd>Camera 4K</dd><dt>Address</dt><dd>192.168.1.40</dd><dt>Version</dt><dd>3.0 <span class="tag up">update → 3.1</span></dd><dt>Sectors</dt><dd><span class="tag bad">8 bad</span></dd></dl></div>
+  </div>
+
+  <p class="ref">Buttons · button · button.mini · a.go · .seg picker (aria-pressed)</p>
+  <div class="tscopy">
+    <button type="button">Default</button>
+    <button type="button" class="mini">Mini</button>
+    <a class="go" href="#">Link button</a>
+    <button type="button" disabled>Disabled</button>
+  </div>
+  <p></p>
+  <span class="seg" role="group"><button type="button" aria-pressed="true">24 h</button><button type="button" aria-pressed="false">7 d</button><button type="button" aria-pressed="false">30 d</button></span>
+
+  <p class="ref">Table · table.t (num columns right-aligned with td.num)</p>
+  <div class="tcard"><table class="t">
+    <thead><tr><th>Container</th><th>State</th><th class="num">CPU</th><th class="num">Memory</th></tr></thead>
+    <tbody>
+      <tr><td>recorder</td><td><span class="dot ok"></span> running</td><td class="num">146 %</td><td class="num">5.5 GB</td></tr>
+      <tr><td>photos</td><td><span class="dot ok"></span> running</td><td class="num">2 %</td><td class="num">812 MB</td></tr>
+      <tr><td>pihole</td><td><span class="dot warn"></span> restarting</td><td class="num">0 %</td><td class="num">96 MB</td></tr>
+    </tbody>
+  </table></div>
+
+  <p class="ref">Pop-up · dialog#modal (.mhead · .mbody) — showModal() / close()</p>
+  <button type="button" onclick="document.getElementById('modal').showModal()">Open pop-up</button>
+</main>
+
+<dialog id="modal" aria-labelledby="modalTitle">
+  <div class="mhead"><div class="title" id="modalTitle"><span>Driveway</span></div><span class="aside">ok</span>
+    <button class="mini" onclick="document.getElementById('modal').close()" title="Close">✕</button></div>
+  <div class="mbody"><div id="modalContent">
+    <p class="tsum"><b>Answering.</b> It replied in 0.9 ms.</p>
+    <dl class="kv"><dt>IP address</dt><dd>192.168.1.40</dd><dt>MAC</dt><dd>02:00:00:12:34:56</dd></dl>
+  </div></div>
+</dialog>
+</body>
+</html>
