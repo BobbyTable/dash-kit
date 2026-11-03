@@ -57,7 +57,8 @@ Plain HTML: load Lucide's UMD build and use names — `icon('Cctv')`, or mark up
 `ngAfterViewInit`. (Prefer components? `lucide-angular` / `lucide-react` render the same icons; `icons.css` styles them via `.ic`.)
 
 ## JavaScript
-Small, dependency-free ES modules (they style through the CSS above):
+Small, dependency-free TypeScript modules (typed: `ChartConfig`, `Series`, `Point`, `BarCell`, `IconNode` …), built to ES modules +
+`.d.ts` with Vite; they style through the CSS above:
 
 | Import | What |
 |---|---|
@@ -82,6 +83,10 @@ with an `ElementRef`'s `nativeElement`.
 
 **No bundler?** `<script src="…/dash-kit/dist/dash-kit.global.js"></script>` gives the same functions on `window.DashKit`
 (built by `npm run build`, done automatically before publishing).
+
+## Developing
+`src/*.ts` → `npm run build` (Vite: `dist/*.js` + `dist/dash-kit.global.js`; tsc: `dist/types`). `npm run typecheck` for a quick check.
+Open `example.html` through any static server to see the result.
 
 ## Versions
 Semver. Pin a minor (`^0.1`) — colour tokens and class names only change in a new minor while < 1.0.

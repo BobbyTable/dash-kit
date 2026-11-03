@@ -1,6 +1,6 @@
 {
   "name": "@bobbytable/dash-kit",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Dracula / Alucard dashboard kit: colour tokens, cards, charts, tables, tabs, pop-ups, icons \u2014 CSS plus small dependency-free JS (line chart, bar tooltips, formatting, copy).",
   "license": "MIT",
   "type": "module",
@@ -8,8 +8,8 @@
     "example.html",
     "index.css",
     "css/",
-    "js/",
     "dist/",
+    "src/",
     "fonts/",
     "README.md",
     "LICENSE"
@@ -19,14 +19,38 @@
     "./index.css": "./index.css",
     "./css/*": "./css/*",
     "./fonts/*": "./fonts/*",
-    "./icons": "./js/icons.js",
-    "./chart": "./js/chart.js",
-    "./bars": "./js/bars.js",
-    "./markup": "./js/markup.js",
-    "./format": "./js/format.js",
-    "./tooltip": "./js/tooltip.js",
-    "./copy": "./js/copy.js",
-    "./js/*": "./js/*",
+    "./js": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./format": {
+      "types": "./dist/types/format.d.ts",
+      "import": "./dist/format.js"
+    },
+    "./tooltip": {
+      "types": "./dist/types/tooltip.d.ts",
+      "import": "./dist/tooltip.js"
+    },
+    "./icons": {
+      "types": "./dist/types/icons.d.ts",
+      "import": "./dist/icons.js"
+    },
+    "./markup": {
+      "types": "./dist/types/markup.d.ts",
+      "import": "./dist/markup.js"
+    },
+    "./chart": {
+      "types": "./dist/types/chart.d.ts",
+      "import": "./dist/chart.js"
+    },
+    "./bars": {
+      "types": "./dist/types/bars.d.ts",
+      "import": "./dist/bars.js"
+    },
+    "./copy": {
+      "types": "./dist/types/copy.d.ts",
+      "import": "./dist/copy.js"
+    },
     "./global": "./dist/dash-kit.global.js"
   },
   "style": "index.css",
@@ -52,7 +76,13 @@
     }
   },
   "scripts": {
-    "build": "node build.cjs",
-    "prepublishOnly": "node build.cjs"
-  }
+    "build": "vite build && vite build --mode global && tsc -p .",
+    "typecheck": "tsc -p . --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5"
+  },
+  "types": "./dist/types/index.d.ts"
 }

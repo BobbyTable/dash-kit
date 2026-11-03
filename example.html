@@ -109,10 +109,10 @@
 <!-- icons: Lucide UMD (here: a local copy, else the CDN) + the kit's helper -->
 <script src="/vendor/lucide.min.js" onerror="this.remove(); const s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.min.js'; s.onload = () => window.dispatchEvent(new Event('lucide')); document.head.append(s)"></script>
 <script type="module">
-  import { icon } from './js/icons.js';
-  import { chart } from './js/chart.js';
-  import { bars } from './js/markup.js';
-  import { installBarTips } from './js/bars.js';
+  import { icon } from './dist/icons.js';
+  import { chart } from './dist/chart.js';
+  import { bars } from './dist/markup.js';
+  import { installBarTips } from './dist/bars.js';
   const now = Date.now(), css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
   const pts = Array.from({ length: 60 }, (_, i) => ({ t: now - (59 - i) * 60e3, cpu: 30 + 25 * Math.sin(i / 7) + 10 * Math.sin(i / 2.3) + (i > 48 ? 30 : 0) }));
   chart(document.getElementById('demoChart'), { series: [{ key: 'cpu', label: 'CPU', color: css('--s1') }], points: pts, t0: now - 59 * 60e3, t1: now,
