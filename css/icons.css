@@ -1,0 +1,3 @@
+/* @bobbytable/dash-kit · icons (.ic from js/icons.js): sized to the text by default; any more specific rule wins */
+.ic { width: 1.15em; height: 1.15em; flex: none; vertical-align: -0.2em; }
+.ic.ok { color: var(--ok); } .ic.warn { color: var(--warn); } .ic.error { color: var(--error); } .ic.mute { color: var(--mute); } .ic.faint { color: var(--faint); }

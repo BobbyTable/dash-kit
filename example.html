@@ -85,6 +85,9 @@
     </tbody>
   </table></div>
 
+  <p class="ref">Icons · icon(Node | 'Name', { size, class, label }) · Lucide, inline SVG, take the text colour</p>
+  <div class="card plain" id="iconDemo" style="flex-direction:row; flex-wrap:wrap; gap:18px; align-items:center; font-size:15px"></div>
+
   <p class="ref">Pop-up · dialog#modal (.mhead · .mbody) — showModal() / close()</p>
   <button type="button" onclick="document.getElementById('modal').showModal()">Open pop-up</button>
 </main>
@@ -97,5 +100,15 @@
     <dl class="kv"><dt>IP address</dt><dd>192.168.1.40</dd><dt>MAC</dt><dd>02:00:00:12:34:56</dd></dl>
   </div></div>
 </dialog>
+<!-- icons: Lucide UMD (here: a local copy, else the CDN) + the kit's helper -->
+<script src="/vendor/lucide.min.js" onerror="this.remove(); const s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.min.js'; s.onload = () => window.dispatchEvent(new Event('lucide')); document.head.append(s)"></script>
+<script type="module">
+  import { icon } from './js/icons.js';
+  const show = () => { document.getElementById('iconDemo').innerHTML =
+    ['Cctv', 'HardDrive', 'Network', 'House', 'Activity', 'Radar'].map(n => `<span>${icon(n)} ${n}</span>`).join('')
+    + `<span>${icon('CircleCheck', { class: 'ok' })} .ok</span><span>${icon('TriangleAlert', { class: 'warn' })} .warn</span>`
+    + `<span>${icon('CircleAlert', { class: 'error' })} .error</span><span>${icon('Cctv', { size: 28 })} size 28</span>`; };
+  window.lucide ? show() : addEventListener('lucide', show);
+</script>
 </body>
 </html>

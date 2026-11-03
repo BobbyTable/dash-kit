@@ -1,5 +1,6 @@
 /* @bobbytable/dash-kit — everything, in cascade order */
 @import "./css/theme.css";
+@import "./css/icons.css";
 @import "./css/base.css";
 @import "./css/components.css";
 @import "./css/tabs.css";

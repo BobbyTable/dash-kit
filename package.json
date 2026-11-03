@@ -1,6 +1,6 @@
 {
   "name": "@bobbytable/dash-kit",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Dracula / Alucard dashboard styling: colour tokens, cards, charts, tables, tabs and pop-ups (light + dark, prefers-color-scheme).",
   "license": "MIT",
   "type": "module",
@@ -8,6 +8,7 @@
     "example.html",
     "index.css",
     "css/",
+    "js/",
     "fonts/",
     "README.md",
     "LICENSE"
@@ -16,7 +17,9 @@
     ".": "./index.css",
     "./index.css": "./index.css",
     "./css/*": "./css/*",
-    "./fonts/*": "./fonts/*"
+    "./fonts/*": "./fonts/*",
+    "./icons": "./js/icons.js",
+    "./js/*": "./js/*"
   },
   "style": "index.css",
   "sideEffects": [
@@ -31,5 +34,13 @@
     "dracula",
     "dashboard",
     "design-system"
-  ]
+  ],
+  "peerDependencies": {
+    "lucide": ">=0.400.0"
+  },
+  "peerDependenciesMeta": {
+    "lucide": {
+      "optional": true
+    }
+  }
 }
