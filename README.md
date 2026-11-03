@@ -92,4 +92,4 @@ Open `example.html` through any static server to see the result.
 Semver. Pin a minor (`^0.1`) — colour tokens and class names only change in a new minor while < 1.0.
 
 ## Licence
-MIT. JetBrains Mono (in `fonts/`) is under the SIL Open Font License 1.1.
+MIT (`LICENSE`). JetBrains Mono (in `fonts/`) is under the SIL Open Font License 1.1 (`fonts/OFL.txt`).
